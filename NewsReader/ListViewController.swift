@@ -14,10 +14,16 @@ class ListViewController: UITableViewController, NSXMLParserDelegate {
     var item:Item?
     var currentString = ""
     
+/*
+ 表示するセルの数
+ */
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return items.count
     }
-    
+
+/*
+ 表示するセルの作成
+ */
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
         cell.textLabel?.text = items[indexPath.row].title
@@ -31,7 +37,7 @@ class ListViewController: UITableViewController, NSXMLParserDelegate {
     
     func startDownload() {
         self.items = []
-        if let url = NSURL(string: "http://feeds.lifehacker.jp/rss/lifehacker/index.xml"){
+        if let url = NSURL(string: "http://cook.2chmtm.net/items/indexr"){
             if let parser = NSXMLParser(contentsOfURL: url) {
                 self.parser = parser
                 self.parser.delegate = self
@@ -48,7 +54,7 @@ class ListViewController: UITableViewController, NSXMLParserDelegate {
                       attributes attributeDict: [String : String]
                 ){
         self.currentString = ""
-        if elementName == "item" {
+        if elementName == "Item" {
             self.item = Item()
         }
         
@@ -72,7 +78,7 @@ class ListViewController: UITableViewController, NSXMLParserDelegate {
         switch elementName {
             case "title": self.item?.title = currentString
             case "link": self.item?.link = currentString
-            case "item": self.items.append(self.item!)
+            case "Item": self.items.append(self.item!)
             default: break
          }
         
